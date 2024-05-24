@@ -29,7 +29,7 @@ app.MapGet("/products/{id}", async (ApplicationDbContext dbContext, string id) =
     return Results.Ok(product);
 });
 
-app.MapPost("/products", (ApplicationDbContext dbContext, CreateProductVM createProductVM) =>
+app.MapPost("/products", async (ApplicationDbContext dbContext, CreateProductVM createProductVM) =>
 {
     Product product = new(Guid.NewGuid())
     {
@@ -37,6 +37,9 @@ app.MapPost("/products", (ApplicationDbContext dbContext, CreateProductVM create
         Description = createProductVM.Description,
         Price = createProductVM.Price
     };
+
+    await dbContext.Products.AddAsync(product);
+    await dbContext.SaveChangesAsync();
 });
 
 
