@@ -4,6 +4,11 @@
 		<TargetFramework>net7.0</TargetFramework>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
+
+		<ContainerImageName>products-api</ContainerImageName>
+		<ContainerImageTags>latest</ContainerImageTags>
+		<PublishProfile>DefaultContainer</PublishProfile>
+		<RuntimeIdentifier>linux-x64</RuntimeIdentifier>
 	</PropertyGroup>
 
 	<ItemGroup>
