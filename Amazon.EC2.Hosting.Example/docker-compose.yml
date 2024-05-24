@@ -1,31 +1,30 @@
 version: '3.8'
 services:
-  api:
-    container_name: product-api
-    image: products-api:latest
-    environment:
-      - ASPNETCORE_ENVIRONMENT=docker
-      - ASPNETCORE_URLS=http://+:80
-    ports:
-      - 80:80
-    depends_on:
-      mssql:
-        condition: service_healthy
-  mssql:
-    container_name: mssql
-    image: mcr.microsoft.com/mssql/server:latest
-    restart: always
-    environment:
-      ACCEPT_EULA: "Y"
-      SA_PASSWORD: "1q2w3e4r+!"
-    ports:
-      - 1433:1433
-    volumes:
-      - mssql-data:/var/opt/mssql
-    healthcheck:
-      test: ["CMD-SHELL", "pidof mssql-server || exit 1"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
+    api:
+        container_name: product-api
+        image: products-api:latest
+        environment:
+            - ASPNETCORE_ENVIRONMENT=docker
+            - ASPNETCORE_URLS=http://+:80
+        ports:
+            - 80:80
+        depends_on:
+            postgres:
+                condition: service_healthy
+    postgres:
+        container_name: postgres
+        image: postgres:15-alpine
+        environment:
+          - POSTGRES_USER=postgres
+          - POSTGRES_PASSWORD=admin
+        ports:
+          - 5432:5432
+        volumes:
+          - postgres-data:/data/db
+        healthcheck:
+          test: ["CMD-SHELL", "pg_isready -U admin"]
+          interval: 10s
+          timeout: 5s
+          retries: 5
 volumes:
-  mssql-data:
+  postgres-data:
