@@ -1,32 +1,33 @@
 version: '3.8'
-name: product-crud
 services:
-    api:
-        container_name: product-api
-        image: products-api:latest
-        environment:
-            - ASPNETCORE_ENVIRONMENT=docker
-            - ASPNETCORE_URLS=http://+:80
-        ports:
-            - 80:80
-        depends_on:
-            mssql:
-                condition: service_healthy
-    mssql:
-        container_name: mssql
-        image: mcr.microsoft.com/mssql/server:latest
-        environment:
-            - ACCEPT_EULA=Y
-            - MSSQL_SA_PASSWORD=admin
-            - MSSQL_PID=Express
-        ports:
-            - 1433:1433
-        volumes:
-            - mssql-data:/var/opt/mssql
-        healthcheck:
-          test: ["CMD-SHELL", "sqlcmd -S localhost -U SA -P 'admin' -Q 'SELECT 1'"]
-          interval: 10s
-          timeout: 5s
-          retries: 5
+  api:
+    container_name: product-api
+    image: products-api:latest
+    environment:
+      - ASPNETCORE_ENVIRONMENT=docker
+      - ASPNETCORE_URLS=http://+:80
+    ports:
+      - 80:80
+    depends_on:
+      mssql:
+        condition: service_healthy
+
+  mssql:
+    container_name: mssql
+    image: mcr.microsoft.com/mssql/server:latest
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=admin
+      - MSSQL_PID=Express
+    ports:
+      - 1433:1433
+    volumes:
+      - mssql-data:/var/opt/mssql
+    healthcheck:
+      test: ["CMD-SHELL", "sqlcmd -S localhost -U SA -P 'admin' -Q 'SELECT 1'"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
 volumes:
-    mssql-data:
+  mssql-data:
