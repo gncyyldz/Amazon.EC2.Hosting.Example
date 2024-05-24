@@ -11,23 +11,16 @@ services:
     depends_on:
       mssql:
         condition: service_healthy
-
   mssql:
     container_name: mssql
     image: mcr.microsoft.com/mssql/server:latest
+    restart: always
     environment:
-      - ACCEPT_EULA=Y
-      - MSSQL_SA_PASSWORD=1q2w3e4r+!
-      - MSSQL_PID=Express
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "1q2w3e4r+!"
     ports:
       - 1433:1433
     volumes:
       - mssql-data:/var/opt/mssql
-    healthcheck:
-      test: ["CMD-SHELL", "sqlcmd -S localhost -U SA -P 'admin' -Q 'SELECT 1'"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
 volumes:
   mssql-data:
