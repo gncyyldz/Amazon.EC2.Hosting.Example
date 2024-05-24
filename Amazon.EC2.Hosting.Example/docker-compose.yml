@@ -16,7 +16,7 @@ services:
         image: postgres:15-alpine
         environment:
           - POSTGRES_USER=postgres
-          - POSTGRES_PASSWORD=admin
+          - POSTGRES_PASSWORD=123456
         ports:
           - 5432:5432
         volumes:
